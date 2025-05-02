@@ -1,6 +1,7 @@
 const { exec } = require('child_process');
 const ort = require('onnxruntime-node');
-const npyjs = require('npyjs');
+const fs = require('fs');
+const parse = require('numpy-parser');
 
 const classNames = [
   'Tomato_Rot', 'Apple_Fresh', 'Banana_Fresh', 'Banana_Anthracnose', 'Mango_Fresh', 'Okra_Rot',
@@ -23,8 +24,8 @@ function softmax(arr) {
 }
 
 async function runInference(npyPath, modelPath) {
-  const npy = new npyjs();
-  const tensorData = await npy.load(npyPath);
+  const buffer = fs.readFileSync(npyPath);
+  const tensorData = parse(buffer);
 
   const session = await ort.InferenceSession.create(modelPath);
   const inputName = session.inputNames[0];
