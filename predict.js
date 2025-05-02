@@ -56,7 +56,7 @@ async function runInference(npyPath, modelPath) {
 
 // Main pipeline
 async function main() {
-  const imagePath = 'input.jpg';
+  const imagePath = 'images.jpg';
   const npyPath = 'output.npy';
   const modelPath = 'model.onnx';
 
