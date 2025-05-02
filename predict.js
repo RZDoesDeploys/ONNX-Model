@@ -1,7 +1,7 @@
-const { exec } = require('child_process');
-const ort = require('onnxruntime-node');
-const fs = require('fs');
-const parse = require('numpy-parser');
+import { exec } from "child_process";
+import ort from "onnxruntime-node";
+import fs from "fs";
+import numpy from "numpy-parser";
 
 const classNames = [
   'Tomato_Rot', 'Apple_Fresh', 'Banana_Fresh', 'Banana_Anthracnose', 'Mango_Fresh', 'Okra_Rot',
@@ -25,11 +25,12 @@ function softmax(arr) {
 
 async function runInference(npyPath, modelPath) {
   const buffer = fs.readFileSync(npyPath);
-  const tensorData = parse(buffer);
+  const tensorData = numpy.fromArrayBuffer(buffer.buffer);
+  const floatData = new Float32Array(tensorData.data);
 
   const session = await ort.InferenceSession.create(modelPath);
   const inputName = session.inputNames[0];
-  const tensor = new ort.Tensor('float32', tensorData.data, tensorData.shape);
+  const tensor = new ort.Tensor('float32', floatData, tensorData.shape);
   const feeds = { [inputName]: tensor };
 
   const results = await session.run(feeds);
@@ -43,6 +44,14 @@ async function runInference(npyPath, modelPath) {
 
   console.log("Top 5 Predictions:");
   console.table(top5);
+
+  fs.unlink(npyPath, (err) => {
+    if (err) {
+      console.error('Error deleting .npy file:', err);
+    } else {
+      console.log('Successfully deleted .npy file:', npyPath);
+    }
+  });
 }
 
 // Main pipeline
