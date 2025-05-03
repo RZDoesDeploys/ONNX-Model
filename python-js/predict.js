@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import ort from "onnxruntime-node";
 import fs from "fs";
-import numpy from "numpy-parser";
+import parser from "numpy-parser";
 
 const classNames = [
   'Tomato_Rot', 'Apple_Fresh', 'Banana_Fresh', 'Banana_Anthracnose', 'Mango_Fresh', 'Okra_Rot',
@@ -25,7 +25,7 @@ function softmax(arr) {
 
 async function runInference(npyPath, modelPath) {
   const buffer = fs.readFileSync(npyPath);
-  const tensorData = numpy.fromArrayBuffer(buffer.buffer);
+  const tensorData = parser.fromArrayBuffer(buffer.buffer);
   const floatData = new Float32Array(tensorData.data);
 
   const session = await ort.InferenceSession.create(modelPath);
@@ -48,8 +48,6 @@ async function runInference(npyPath, modelPath) {
   fs.unlink(npyPath, (err) => {
     if (err) {
       console.error('Error deleting .npy file:', err);
-    } else {
-      console.log('Successfully deleted .npy file:', npyPath);
     }
   });
 }
