@@ -17,7 +17,7 @@ Install the necessary dependencies for your selected approach. For all approache
 This setup uses **Node.js** and the `onnxruntime-node` and `sharp` package to run inference.
 
 ### Tested on:
-- Raspberry Pi OS (32-bit) using Node.js 22
+- Raspberry Pi OS (32-bit) using Node.js 22 [Download Link](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-desktop)
 
 ## 2. Python-only (Folder: `python/`)
 
