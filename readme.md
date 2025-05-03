@@ -26,7 +26,7 @@ This setup uses **Python** and the `onnxruntime` and `Pillow` package to run inf
 ### Tested on:
 - Raspberry PI ARM64 using Python 3.11.11
 
-## 2. Python-JS (Folder: `python-js/`)
+## 3. Python-JS (Folder: `python-js/`)
 
 Use this only when you are getting error in doing cmake build of package components.
 
